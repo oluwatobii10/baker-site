@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="discount.css">
+</head>
+<body>
+    <h1>Welcome😋</h1>
+    <h2>Win and get 10% off a single order for the month</h2>
+    <p id="status">Player X's turn</p>
+    <div id="board">
+       <div class="cell" id="cell0"></div>
+       <div class="cell" id="cell1"></div>
+       <div class="cell" id="cell2"></div>
+       <div class="cell" id="cell3"></div>
+       <div class="cell" id="cell4"></div>
+       <div class="cell" id="cell5"></div>
+       <div class="cell" id="cell6"></div>
+       <div class="cell" id="cell7"></div>
+       <div class="cell" id="cell8"></div>
+    </div>
+    <button id="restart">Restart Game</button>
+
+    <script>
+
+const playArea = document.getElementById("board");
+const messageBox = document.getElementById("status");
+
+function checkPlayLimit() {
+  const lastPlayed = localStorage.getItem("lastPlayedDate");
+  const today = new Date();
+
+  if (lastPlayed) {
+    const lastDate = new Date(lastPlayed);
+    const diffDays = Math.floor((today - lastDate) / (1000 * 60 * 60 * 24));
+
+    if (diffDays < 30) {
+      const nextPlayDate = new Date(lastDate);
+      nextPlayDate.setDate(lastDate.getDate() + 30);
+
+      playArea.style.pointerEvents = "none";
+      const restartBtn = document.getElementById("restart");
+      if (restartBtn) restartBtn.disabled = true;
+
+      messageBox.textContent = `You can only play once per month 😅. Come back on ${nextPlayDate.toDateString()}.`;
+      messageBox.style.color = "red";
+      return false;
+    }
+  }
+  return true;
+}
+
+checkPlayLimit();
+
+const savedCode = localStorage.getItem("discountCode");
+if (savedCode) {
+  messageBox.textContent += `\nYour last discount code: ${savedCode}`;
+}
+
+const cells = document.querySelectorAll(".cell");
+const statusText = document.getElementById("status");
+const restartBtn = document.getElementById("restart");
+
+let currentPlayer = "X";
+let board = ["", "", "", "", "", "", "", "", ""];
+let gameActive = true;
+
+const winningCombinations = [
+  [0,1,2],
+  [3,4,5],
+  [6,7,8],
+  [0,3,6],
+  [1,4,7],
+  [2,5,8],
+  [0,4,8],
+  [2,4,6],
+];
+
+function handleCellClick(event) {
+  const cell = event.target;
+  const cellIndex = parseInt(cell.id.replace("cell", ""));
+  if (board[cellIndex] !== "" || !gameActive) return;
+
+  makeMove(cellIndex, "X");
+  if (!gameActive) return;
+
+  setTimeout(computerMove, 500);
+}
+
+function makeMove(index, player) {
+  board[index] = player;
+  document.getElementById(`cell${index}`).textContent = player;
+  checkResult(player);
+}
+
+function computerMove() {
+  if (!gameActive) return;
+
+  let move = findBestMove("O");
+  if (move === null) move = findBestMove("X");
+  if (move === null) {
+    const emptyCells = board.map((v, i) => (v === "" ? i : null)).filter(v => v !== null);
+    move = emptyCells[Math.floor(Math.random() * emptyCells.length)];
+  }
+
+  makeMove(move, "O");
+}
+
+function findBestMove(player) {
+  for (let combo of winningCombinations) {
+    const [a, b, c] = combo;
+    const values = [board[a], board[b], board[c]];
+    const playerCount = values.filter(v => v === player).length;
+    const emptyCount = values.filter(v => v === "").length;
+    if (playerCount === 2 && emptyCount === 1) {
+      const emptyIndex = combo[values.indexOf("")];
+      return emptyIndex;
+    }
+  }
+  return null;
+}
+
+function checkResult(player) {
+  for (let combo of winningCombinations) {
+    const [a, b, c] = combo;
+    if (board[a] && board[a] === board[b] && board[a] === board[c]) {
+      if (player === "X") {
+        endGame("You win🎉 You get 10% off any order", true);
+      } else {
+        endGame("You Lost! 🤖", false);
+      }
+      return;
+    }
+  }
+
+  if (!board.includes("")) {
+    endGame("It's a tie🤝..Try again later!", false);
+    return;
+  }
+
+  statusText.textContent = player === "X" ? "Computer's turn (O)..." : "Your turn (X)";
+}
+
+function endGame(message, playerWon) {
+  statusText.textContent = message;
+  gameActive = false;
+  localStorage.setItem("lastPlayedDate", new Date());
+  restartBtn.disabled = true;
+
+  
+  if (playerWon) {
+    const discountCode = generateDiscountCode();
+    localStorage.setItem("discountCode", discountCode);
+
+    
+    statusText.innerHTML = `
+      ${message}<br>
+      <strong>Your discount code:</strong> <span id="discountCode">${discountCode}</span><br>
+      <button id="copyCodeBtn">Copy Code</button>
+    `;
+
+  
+    document.getElementById("copyCodeBtn").addEventListener("click", () => {
+      const code = document.getElementById("discountCode").textContent;
+      navigator.clipboard.writeText(code);
+      document.getElementById("copyCodeBtn").textContent = "Copied! ✅";
+    });
+  }
+}
+
+
+function restartGame() {
+  currentPlayer = "X";
+  board = ["", "", "", "", "", "", "", "", ""];
+  gameActive = true;
+  statusText.textContent = "Player X's turn";
+  cells.forEach(cell => (cell.textContent = ""));
+  restartBtn.disabled = false;
+}
+
+function generateDiscountCode() {
+  const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+  let code = "COFFEE-10OFF-";
+  for (let i = 0; i < 4; i++) {
+    code += chars.charAt(Math.floor(Math.random() * chars.length));
+  }
+  return code;
+}
+
+cells.forEach(cell => cell.addEventListener("click", handleCellClick));
+restartBtn.addEventListener("click", restartGame);
+
+
+
+let secretKeys = ["t", "o", "b"];
+let currentIndex = 0;
+
+document.addEventListener("keydown", (event) => {
+  
+  if (event.shiftKey && event.key.toLowerCase() === secretKeys[currentIndex]) {
+    currentIndex++;
+
+    
+    if (currentIndex === secretKeys.length) {
+      currentIndex = 0;
+
+      if (!document.getElementById("adminReset")) {
+        const adminBtn = document.createElement("button");
+        adminBtn.id = "adminReset";
+        adminBtn.textContent = "🧑‍💻 Admin: Reset Play Limit";
+        adminBtn.style = `
+          position: fixed;
+          bottom: 20px;
+          right: 20px;
+          background: brown;
+          color: white;
+          border: none;
+          padding: 10px 20px;
+          border-radius: 10px;
+          cursor: pointer;
+          font-weight: bold;
+          z-index: 9999;
+        `;
+
+        document.body.appendChild(adminBtn);
+
+        adminBtn.addEventListener("click", () => {
+          localStorage.removeItem("lastPlayedDate");
+          localStorage.removeItem("discountCode");
+          alert("✅ Play limit reset — admin unlocked!");
+          location.reload();
+        });
+
+        alert("✅ Admin Reset Button Unlocked!");
+      }
+    }
+  } else {
+    currentIndex = 0;
+  }
+});
+
+</script>
+
+
+</body>
+</html>
