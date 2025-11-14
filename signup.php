@@ -1,0 +1,65 @@
+<?php
+$db=new mysqli('localhost','root','','bakery');
+if(isset($_POST['submit'])){
+  $fullname=$_POST['fullname'];
+  $email = $_POST['email'];
+  $phone = $_POST['phone'];
+  $password=$_POST['password'];
+  $confirm_password=$_POST['confirm_password'];
+  $referral_code=$_POST['referral_code'];
+  $birthday=$_POST['birthday'];
+  $favorite_pastry=$_POST['favorite_pastry'];
+  $allergy_info=$_POST['allergy_info'];
+  $sql= "INSERT INTO sign_up VALUES('','".$fullname."','".$email."','".$phone."','".$password."','".$confirm_password."','".$referral_code."','".$birthday."','".$favorite_pastry."','".$allergy_info."',now())";
+  $d = $db->query($sql);
+  if($d){
+    echo "Signup Successful";
+  }
+}
+
+?>
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bakery Signup</title>
+  <link rel="stylesheet" href="signup.css">
+</head>
+<body>
+  <div class="signup-container">
+    <h1>Join Our Bakery Family 🥖🍪🧁</h1>
+    <form action="" method="POST">
+      <label>Full Name</label>
+      <input type="text" name="fullname" placeholder="Enter your full name" required>
+
+      <label>Email Address</label>
+      <input type="text" name="email" placeholder="Enter your email" required>
+
+      <label>Phone Number</label>
+      <input type="text" name="phone" placeholder="Enter your phone number" required>
+
+      <label>Password</label>
+      <input type="text" name="password" placeholder="Create password" required>
+
+      <label>Confirm Password</label>
+      <input type="text" name="confirm_password" placeholder="Confirm your password" required>
+
+      <label>Referral Code (optional)</label>
+      <input type="text" name="referral_code" placeholder="Enter referral code">
+
+      <label>Birthday</label>
+      <input type="date" name="birthday" required>
+
+      <label>Favorite Pastry</label>
+      <input type="text" name="favorite_pastry" placeholder="e.g., Croissant, Donut, Muffin">
+
+      <label>Allergy Info</label>
+      <textarea placeholder="List any food allergies" name="allergy_info"></textarea>
+
+      <button type="submit" name="submit">Sign Up</button>
+</form>
+</html>

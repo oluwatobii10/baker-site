@@ -1,3 +1,7 @@
+html, body {
+  width: 100%;
+  overflow-x: hidden;   /* 🔥 Stops page from shifting sideways */
+}
 .container{
     margin: 5px;
     background-color: chocolate;
@@ -697,13 +701,23 @@
 
 
 
- @media (max-width: 700px){
+ @media (max-width: 600px)
+ {
+    *{
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+     } 
    .container{
     box-sizing: border-box;
     margin: 0;
     padding: 0;
     width: 100%;
+    align-items: center;
    } 
+   .navbar{
+    flex-wrap: wrap;
+   }
   .logo img{
     width: 40px;
     height: 40px;
@@ -743,17 +757,21 @@
   }
   .navlinks ul{
     position: relative;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
     align-items: center;
     padding-right: 30px;
     list-style: none;
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 10px; 
   }
   .navlinks ul li{
     color: whitesmoke;
     cursor: pointer;
   }
+  
   .cta button a{
     cursor: pointer;
   }
@@ -776,7 +794,17 @@
     display: flex;
     flex-direction: column;
     gap: 2px;
+    padding: 40px 10px;
   }
+
+ #demo {
+    display: block;
+    width: 100%;
+    text-align: center;
+    font-size: 1.4rem;
+
+  }
+
   .header p{
     position: relative;
     display: flex;
@@ -789,31 +817,53 @@
     position: relative;
     display: flex;
     flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    padding: 20px;
+    width: 100%;
+    overflow: visible;
+    height: 500px;
   }
   .bigcake{
     position: absolute;
-               top: -53%;
-               left: -33%;
+               top: -85%;
+               left: -25%;
     display: flex;
     align-items: center;
+    justify-content: center;
+    width: 100%;
+    
   }
   .bigcake img{
-    width: 300px;
-    height: 300px;
+    /* width: 550px;
+    height: 300px; */
+     width: 100%;        /* 🔥 Fits screen */
+    max-width: 400px;   /* Limit size */
+    height: auto;
   }
   .left{
     position: relative;
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 6px;
+    width: 100%;
   }
   .left p{
-    padding-top: 235px;
-    padding-left: 5px;
+    font-size: 16px;
   }
+  
   .right{
-    position: absolute;
-              top: 55%;
-              left: 17%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 6px;
+    width: 100%;
+  }
+  .right p{
+    font-size: 16px;
   }
   .cont2head{
     gap: 0px;
@@ -836,6 +886,7 @@
   .craft{
     position: relative;
     display: flex;
+    padding-bottom: 10px;
   }
   .menu{
     position: relative;
@@ -890,13 +941,12 @@
     flex-direction: column;
     width: 100%;
   }
-  .blackw{
-    
-  }
+
   .blackw img{
     margin: 0px -90px auto;
     display: flex;
       width: 200px;
+
   }
 
   .writecta{
@@ -904,6 +954,18 @@
     display: flex;
     width: 100%;
     margin: 2px;
+  }
+  .writecta .writetop{
+     width: 95%;
+  }
+  .wcta{
+    position: relative;
+    display: flex;
+    padding-right: 30px;
+  }
+  .wcta button{
+    position: relative;
+    display: flex;
   }
   .last{
     position: relative;

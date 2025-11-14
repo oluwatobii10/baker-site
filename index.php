@@ -5,6 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Toby Bakes</title>
     <link rel="stylesheet" href="index.css">
+    <!-- GSAP Core -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+
+<!-- ScrollTrigger Plugin -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
 </head>
 <body>
     <div class="container">
@@ -32,8 +38,8 @@
               </ul>
             </div>
             <div class="cta">
-              <button><a href="signup.html">Sign Up</a></button>
-              <button><a href="login.html">Login</a></button>
+              <button><a href="signup.php">Sign Up</a></button>
+              <button><a href="login.php">Login</a></button>
             </div>
           </div>
           <div class="header">
@@ -42,21 +48,23 @@
             <p>Freshly <span>Baked</span></p>
             <p>Goodness Everyday</p>
           </div>
+    
           <div class="bodyone">
+             <div class="bigcake">
+              <img src="./images/cookiepile-removebg-preview.png">
+            </div>
             <div class="left">
               <p>Email</p>
               <p>info@bakeryfresh.com</p>
               <div class="sign">
+              <!-- <p>|</p>
               <p>|</p>
-              <p>|</p>
-              <p>|</p>
+              <p>|</p> -->
               </div>
               <p>Location</p>
               <p>25, Jobifele way, Ikeja, Lagos</p>
             </div>
-            <div class="bigcake">
-              <img src="./images/cookiepile-removebg-preview.png">
-            </div>
+           
             <div class="right">
               <p>From warm breads to delightful</p>
               <p>pastries made with love and the finest</p>
@@ -280,5 +288,166 @@
         }
       }
     </script>
+
+    <script>
+  // Register the plugin
+  gsap.registerPlugin(ScrollTrigger);
+
+  // 🌅 HERO SECTION (fade + slide up)
+gsap.from(".header p", {
+  scrollTrigger: {
+    trigger: ".header",
+    start: "top 80%",
+  },
+  y: 60,
+  opacity: 0,
+  duration: 1.2,
+  stagger: 0.3
+});
+
+// 🍪 BODYONE (left, image, right sections)
+gsap.from(".bodyone .left", {
+  scrollTrigger: {
+    trigger: ".bodyone",
+    start: "top 85%",
+  },
+  x: -100,
+  opacity: 0,
+  duration: 1.2
+});
+
+gsap.from(".bodyone .bigcake", {
+  scrollTrigger: {
+    trigger: ".bodyone",
+    start: "top 85%",
+  },
+  scale: 0.8,
+  opacity: 0,
+  duration: 1.2,
+  delay: 0.3
+});
+
+gsap.from(".bodyone .right", {
+  scrollTrigger: {
+    trigger: ".bodyone",
+    start: "top 85%",
+  },
+  x: 100,
+  opacity: 0,
+  duration: 1.2,
+  delay: 0.5
+});
+
+// 🧁 PRODUCTS SECTION (staggered card reveals)
+gsap.from(".products .one", {
+  scrollTrigger: {
+    trigger: ".products",
+    start: "top 85%",
+  },
+  y: 100,
+  opacity: 0,
+  duration: 1.2,
+  stagger: 0.3,
+  ease: "power2.out"
+});
+
+// 📖 STORY SECTION (fade in)
+gsap.from(".story", {
+  scrollTrigger: {
+    trigger: ".story",
+    start: "top 80%",
+  },
+  y: 60,
+  opacity: 0,
+  duration: 1.2
+});
+
+// 🍽️ CRAFT SECTION (slide-in text and image)
+gsap.from(".craft .menu, .craft .from", {
+  scrollTrigger: {
+    trigger: ".craft",
+    start: "top 85%",
+  },
+  y: 60,
+  opacity: 0,
+  duration: 1.2,
+  stagger: 0.3
+});
+
+gsap.from(".craft .imge img", {
+  scrollTrigger: {
+    trigger: ".craft .imge",
+    start: "top 85%",
+  },
+  scale: 0.8,
+  opacity: 0,
+  duration: 1.2
+});
+
+// 👨‍🍳 CHEF SECTION (left image + right text)
+gsap.from(".chefimg img", {
+  scrollTrigger: {
+    trigger: ".chef",
+    start: "top 80%",
+  },
+  x: -120,
+  opacity: 0,
+  duration: 1.2
+});
+
+gsap.from(".chefright", {
+  scrollTrigger: {
+    trigger: ".chef",
+    start: "top 80%",
+  },
+  x: 120,
+  opacity: 0,
+  duration: 1.2,
+  delay: 0.3
+});
+
+// 🧈 COOKIE HOLD (pin + scroll animation)
+ScrollTrigger.create({
+  trigger: ".cookiehold",
+  start: "top center",
+  end: "+=50",
+  pin: true,
+  scrub: true
+});
+
+gsap.from(".cookiehold .writing", {
+  scrollTrigger: {
+    trigger: ".cookiehold",
+    start: "top 85%",
+  },
+  y: 60,
+  opacity: 0,
+  duration: 1.2
+});
+
+// 💬 LAST SECTION (fade + staggered people)
+gsap.from(".last h2, .last .whether p", {
+  scrollTrigger: {
+    trigger: ".last",
+    start: "top 85%",
+  },
+  y: 60,
+  opacity: 0,
+  duration: 1.2,
+  stagger: 0.3
+});
+
+gsap.from(".last .people div", {
+  scrollTrigger: {
+    trigger: ".last .people",
+    start: "top 85%",
+  },
+  y: 100,
+  opacity: 0,
+  duration: 1.2,
+  stagger: 0.3
+});
+</script>
+
 </body>
 </html>
