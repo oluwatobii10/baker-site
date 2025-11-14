@@ -954,14 +954,17 @@ html, body {
     display: flex;
     width: 100%;
     margin: 2px;
+
   }
-  .writecta .writetop{
-     width: 95%;
+.writetop{
+    padding-left: 10px;
+    padding-right: 20px;
+     width: 70%;
   }
   .wcta{
     position: relative;
     display: flex;
-    padding-right: 30px;
+    align-items: flex-end;
   }
   .wcta button{
     position: relative;
